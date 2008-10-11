@@ -6,7 +6,10 @@ module HoptoadNotifier
     
     def configure
       key = YAML.load_file(Merb.root / 'config' / 'hoptoad.yml')
-      @api_key = key[Merb.env][:api_key]
+      if key
+        env = key[Merb.env.to_sym]
+        @api_key = env[:api_key] if env
+      end
     end    
     
     def logger

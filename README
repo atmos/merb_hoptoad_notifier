@@ -5,10 +5,24 @@ The original: http://github.com/thoughtbot/hoptoad_notifier/tree/master
 
 Usage:
 
-1) Add the following to init.rb
+1) Get your api key for your app from hoptoadapp.com
+
+2) Add the api key to config/hoptoad.yml with a similar syntax as the following
+---
+:development: &defaults
+  :api_key: ZOMGLOLROFLMAO
+
+:test:
+  <<: *defaults
+
+:production:
+  :api_key: UBERSECRETSHIT
+
+
+3) Require hoptoad in init.rb
 require 'merb_hoptoad_notifier'
 
-2) Create an exceptions controller like this:
+5) Create an exceptions controller like this:
 
 class Exceptions < Merb::Controller
    
