@@ -28,7 +28,6 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('merb', '>= 0.9.7')
   s.require_path = 'lib'
   s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
-  
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -48,12 +47,10 @@ task :make_spec do
 end
 
 namespace :jruby do
-
   desc "Run :package and install the resulting .gem with jruby"
   task :install => :package do
     sh %{#{sudo} jruby -S gem install #{install_home} pkg/#{NAME}-#{GEM_VERSION}.gem --no-rdoc --no-ri}
   end
-
 end
 
 Spec::Rake::SpecTask.new(:default) do |t|
