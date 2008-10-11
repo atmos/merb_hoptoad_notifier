@@ -5,6 +5,5 @@
 :test:
   <<: *defaults
 
- 
 :production:
   :api_key: UBERSECRETSHIT

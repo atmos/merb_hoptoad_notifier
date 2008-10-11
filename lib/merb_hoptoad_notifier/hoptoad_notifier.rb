@@ -62,7 +62,15 @@ module HoptoadNotifier
         when Net::HTTPSuccess then
           logger.info "Hoptoad Success: #{response.class}"
         else
-          logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}"
+          # logger.error "Hoptoad Failure: #{response.class}"
+          # 
+          begin
+            logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}"
+          rescue => e
+            puts e.backtrace
+          end
+            
+          
         end
       end            
     end
