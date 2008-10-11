@@ -14,6 +14,7 @@ module HoptoadNotifier
     end
     
     def notify_hoptoad(request, session)
+      return if request.nil?
       params = request.params
 
       request.exceptions.each do |exception|
@@ -22,7 +23,7 @@ module HoptoadNotifier
           :error_class   => Extlib::Inflection.camelize(exception.class.name),
           :error_message => "#{Extlib::Inflection.camelize(exception.class.name)}: #{exception.message}",
           :backtrace     => exception.backtrace,
-          :environment   => ENV
+          :environment   => ENV.to_hash
         }
                     
         data[:request] = {
@@ -39,6 +40,7 @@ module HoptoadNotifier
       
         send_to_hoptoad :notice => default_notice_options.merge(data)                 
       end
+      true
     end
     
     def send_to_hoptoad(data) #:nodoc:

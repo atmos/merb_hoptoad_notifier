@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe "merb_hoptoad_notifier" do
+  include Merb::Spec::Helpers
+
   before(:each) do
     stub(Merb).env { :production }
     stub(Merb).root { Dir.tmpdir }
@@ -52,10 +54,23 @@ describe "merb_hoptoad_notifier" do
     end
     
     describe ".notify_hoptoad" do
-      before(:each) do
-        mock(HoptoadNotifier).send_to_hoptoad({})
+      describe "bad input" do
+        it "should handle nil input" do
+          HoptoadNotifier.notify_hoptoad(nil, nil).should be_nil
+        end
       end
-      it "should have specs"
+
+      describe "good input" do
+        before(:each) do
+          mock(HoptoadNotifier).send_to_hoptoad(anything).times(2) { true }
+          @request = setup_merb_request
+          mock(@request).exceptions { [RuntimeError.new('ZOMG'), RuntimeError.new('ORLY')]}
+          mock(@request).params { {"q"=>"0017000000SmnJ0"} }
+        end
+        it "should return true" do
+          HoptoadNotifier.notify_hoptoad(@request, {}).should be_true
+        end
+      end
     end
     
     describe ".send_to_hoptoad" do
@@ -82,6 +97,18 @@ describe "merb_hoptoad_notifier" do
           HoptoadNotifier.send_to_hoptoad({})
         end
       end
+      describe "a timeout exception is thrown" do
+        before(:each) do
+          response = TimeoutError.new("It took too fucking long")
+          mock(@http).post("/notices/", "--- {}\n\n", @headers) { raise response }
+        end
+        it "should log success" do
+          mock(HoptoadNotifier.logger).error("Hoptoad Failure: NilClass\n")
+          mock(HoptoadNotifier.logger).error("Timeout while contacting the Hoptoad server.")
+          HoptoadNotifier.send_to_hoptoad({})
+        end
+      end
+      
     end
   end
 end
