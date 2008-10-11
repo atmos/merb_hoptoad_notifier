@@ -22,7 +22,7 @@ module HoptoadNotifier
           :error_class   => Extlib::Inflection.camelize(exception.class.name),
           :error_message => "#{Extlib::Inflection.camelize(exception.class.name)}: #{exception.message}",
           :backtrace     => exception.backtrace,
-          :environment   => ENV.to_hash
+          :environment   => ENV
         }
                     
         data[:request] = {
@@ -62,15 +62,7 @@ module HoptoadNotifier
         when Net::HTTPSuccess then
           logger.info "Hoptoad Success: #{response.class}"
         else
-          # logger.error "Hoptoad Failure: #{response.class}"
-          # 
-          begin
-            logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}"
-          rescue => e
-            puts e.backtrace
-          end
-            
-          
+          logger.error "Hoptoad Failure: #{response.class}\n#{response.body if response.respond_to? :body}"
         end
       end            
     end
@@ -79,10 +71,10 @@ module HoptoadNotifier
       {
         :api_key       => HoptoadNotifier.api_key,
         :error_message => 'Notification',
-        :backtrace     => caller,
+        :backtrace     => nil,
         :request       => {},
         :session       => {},
-        :environment   => ENV
+        :environment   => {}
       }
     end     
     

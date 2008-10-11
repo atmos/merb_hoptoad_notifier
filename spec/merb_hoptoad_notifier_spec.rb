@@ -24,15 +24,36 @@ describe "merb_hoptoad_notifier" do
     end
   end
   
+  describe ".stringify_key" do
+    it "should turn string keys into symbols" do
+      HoptoadNotifier.stringify_keys({'foo' => 'bar', :baz => 'foo', :bar => 'foo'}).should == { 'foo' => 'bar', 'baz' => 'foo', 'bar' => 'foo'}
+    end
+  end
+
+
   describe "notification" do
     before(:each) do
       stub(Net::HTTP).new('hoptoadapp.com', 80, nil, nil, nil, nil) { @http }
       stub(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
       HoptoadNotifier.configure
     end
+    
+    describe ".default_notice_options" do
+      it "should return sane defaults" do
+        HoptoadNotifier.default_notice_options.should == {
+          :api_key       => HoptoadNotifier.api_key,
+          :error_message => 'Notification',
+          :backtrace     => nil,
+          :request       => {},
+          :session       => {},
+          :environment   => {}
+        }
+      end
+    end
+    
     describe ".notify_hoptoad" do
       before(:each) do
-        
+        mock(HoptoadNotifier).send_to_hoptoad({})
       end
       it "should have specs"
     end
