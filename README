@@ -1,0 +1,35 @@
+This is a basic adaption of the rails hoptoad plugin for use with merb (only essential features included).
+
+This plugin: http://github.com/joakimk/hoptoad_notifier_merb/tree/master
+The original: http://github.com/thoughtbot/hoptoad_notifier/tree/master
+
+Confirmed working with merb 0.9.7
+
+Usage:
+
+1) Download the plugin into lib.
+
+2) Create an exceptions controller like this:
+
+class Exceptions < Merb::Controller
+   
+  def internal_server_error
+    HoptoadNotifier.notify_hoptoad(request, session) if [ 'staging', 'production' ].include?(Merb.env)
+    render
+  end
+  
+end
+
+3) Add the following to init.rb:
+
+Merb::BootLoader.before_app_loads do
+  require "hoptoad_notifier"
+end
+
+Merb::BootLoader.after_app_loads do 
+  HoptoadNotifier.configure do |config|
+    config.api_key = '...'
+  end
+end
+
+4) Restart the server, trigger an error and check that it arrived at hoptoad :)
