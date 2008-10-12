@@ -8,7 +8,7 @@ module HoptoadNotifier
       key = YAML.load_file(Merb.root / 'config' / 'hoptoad.yml')
       if key
         env = key[Merb.env.to_sym]
-        @api_key = env[:api_key] if env
+        env ? @api_key = env[:api_key] : raise(ArgumentError, "No hoptoad key for Merb environment #{Merb.env}")
       end
     end    
     
