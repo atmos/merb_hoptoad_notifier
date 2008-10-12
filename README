@@ -22,15 +22,19 @@ Usage:
 3) Require hoptoad in init.rb
 require 'merb_hoptoad_notifier'
 
-5) Create an exceptions controller like this:
+4) Add the following method to your Exceptions controller.
 
 class Exceptions < Merb::Controller
    
-  def internal_server_error
+  def exceptions
     HoptoadNotifier.notify_hoptoad(request, session) if [ 'staging', 'production' ].include?(Merb.env)
     render
   end
   
 end
 
-4) Restart the server, trigger an error and check that it arrived at hoptoad :)
+5) Restart the server, trigger an error(in staging or prod) and check that it arrived at hoptoad :)
+
+
+Many thanks to Joakim Kolsjö for creating most of the hoptoad code.  I just spec'd and updated it. ;)
+
