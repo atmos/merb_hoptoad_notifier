@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe "merb_hoptoad_notifier" do
+describe "HoptoadNotifier" do
   include Merb::Spec::Helpers
 
   before(:each) do
@@ -18,7 +18,7 @@ describe "merb_hoptoad_notifier" do
   
   describe ".configure" do
     before(:each) do
-      stub(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
+      mock(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
       HoptoadNotifier.configure
     end
     it "should know the api key after configuring" do
@@ -36,7 +36,7 @@ describe "merb_hoptoad_notifier" do
   describe "notification" do
     before(:each) do
       stub(Net::HTTP).new('hoptoadapp.com', 80, nil, nil, nil, nil) { @http }
-      stub(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
+      mock(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
       HoptoadNotifier.configure
     end
     
@@ -102,7 +102,7 @@ describe "merb_hoptoad_notifier" do
           response = TimeoutError.new("It took too fucking long")
           mock(@http).post("/notices/", "--- {}\n\n", @headers) { raise response }
         end
-        it "should log success" do
+        it "should log failure" do
           mock(HoptoadNotifier.logger).error("Hoptoad Failure: NilClass\n")
           mock(HoptoadNotifier.logger).error("Timeout while contacting the Hoptoad server.")
           HoptoadNotifier.send_to_hoptoad({})
