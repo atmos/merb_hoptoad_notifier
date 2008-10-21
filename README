@@ -22,7 +22,7 @@ Usage:
 3) Require hoptoad in init.rb
 require 'merb_hoptoad_notifier'
 
-4) Add the following method to your Exceptions controller.
+4) Add the following method to your Exceptions controller.  Depending on your merb version you'll need to use the exceptions,standard_error, or internal_server error as the action name.  Kinda weak, but the API changed a lot in 0.9.x
 
 class Exceptions < Merb::Controller
    
