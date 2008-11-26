@@ -12,6 +12,9 @@ Usage:
 :development: &defaults
   :api_key: ZOMGLOLROFLMAO
 
+:rake:
+  <<: *defaults
+
 :test:
   <<: *defaults
 
