@@ -7,7 +7,7 @@ require 'merb-core/tasks/merb_rake_helper'
 require 'spec/rake/spectask'
 
 NAME = "merb_hoptoad_notifier"
-GEM_VERSION = "1.0.1"
+GEM_VERSION = "1.0.5"
 AUTHOR = "Corey Donohoe"
 EMAIL = "atmos@atmos.org"
 HOMEPAGE = "http://github.com/atmos"
