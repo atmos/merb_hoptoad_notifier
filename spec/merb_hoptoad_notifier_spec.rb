@@ -6,16 +6,16 @@ describe "HoptoadNotifier" do
   before(:each) do
     stub(Merb).env { :production }
     stub(Merb).root { Dir.tmpdir }
-    
+
     @http = Net::HTTP.new('hoptoadapp.com')
     @headers = { "Content-type" => "application/x-yaml", "Accept" => "text/xml, application/xml" }
     @config = {:development => {:api_key=>"ZOMGLOLROFLMAO"}, :production => {:api_key=>"UBERSECRETSHIT"}, :test => {:api_key=>"ZOMGLOLROFLMAO"}}
   end
-  
+
   it "should define a constant" do
     HoptoadNotifier.should_not be_nil
   end
-  
+
   describe ".configure" do
     before(:each) do
       mock(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
@@ -25,7 +25,7 @@ describe "HoptoadNotifier" do
       HoptoadNotifier.api_key.should == 'UBERSECRETSHIT'
     end
   end
-  
+
   describe ".stringify_key" do
     it "should turn string keys into symbols" do
       HoptoadNotifier.stringify_keys({'foo' => 'bar', :baz => 'foo', :bar => 'foo'}).should == { 'foo' => 'bar', 'baz' => 'foo', 'bar' => 'foo'}
@@ -39,7 +39,7 @@ describe "HoptoadNotifier" do
       mock(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { @config }
       HoptoadNotifier.configure
     end
-    
+
     describe ".default_notice_options" do
       it "should return sane defaults" do
         HoptoadNotifier.default_notice_options.should == {
@@ -52,7 +52,7 @@ describe "HoptoadNotifier" do
         }
       end
     end
-    
+
     describe ".notify_hoptoad" do
       describe "bad input" do
         it "should handle nil input" do
@@ -72,7 +72,7 @@ describe "HoptoadNotifier" do
         end
       end
     end
-    
+
     describe ".send_to_hoptoad" do
       describe "any 2XX response" do
         before(:each) do
@@ -108,7 +108,6 @@ describe "HoptoadNotifier" do
           HoptoadNotifier.send_to_hoptoad({})
         end
       end
-      
     end
   end
 end

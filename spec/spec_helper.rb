@@ -4,6 +4,7 @@ require 'rr'
 require 'merb-core'
 require 'merb_hoptoad_notifier'
 require 'tmpdir'
+require 'pp'
 
 Spec::Runner.configure do |config|
   config.mock_with :rr

@@ -15,6 +15,10 @@ module HoptoadNotifier
     def logger
       @logger || Merb.logger
     end
+
+    def environment_filters
+      @environment_filters ||= %w(SSH_AUTH_SOCK)
+    end
     
     def notify_hoptoad(request, session)
       return if request.nil?
@@ -28,27 +32,27 @@ module HoptoadNotifier
           :backtrace     => exception.backtrace,
           :environment   => ENV.to_hash
         }
-                    
+
         data[:request] = {
           :params => params[:original_params]
         }
- 
-        data[:environment].merge!(request.env)
+
+        data[:environment] = clean_hoptoad_environment(ENV.to_hash.merge(request.env))
         data[:environment][:RAILS_ENV] = Merb.env
-       
+
         data[:session] = {
            :key         => session.instance_variable_get("@session_id"),
            :data        => session.instance_variable_get("@data")
         }
-      
-        send_to_hoptoad :notice => default_notice_options.merge(data)                 
+
+        send_to_hoptoad :notice => default_notice_options.merge(data)
       end
       true
     end
-    
+
     def send_to_hoptoad(data) #:nodoc:
       url = URI.parse("http://hoptoadapp.com:80/notices/")
-      
+
       Net::HTTP.start(url.host, url.port) do |http|
         headers = {
           'Content-type' => 'application/x-yaml',
@@ -88,6 +92,13 @@ module HoptoadNotifier
         h[pair.first.to_s] = pair.last.is_a?(Hash) ? stringify_keys(pair.last) : pair.last
         h
       end
-    end       
+    end
+    def clean_hoptoad_environment(env) #:nodoc:
+      env.each do |k, v|
+        env[k] = "[FILTERED]" if HoptoadNotifier.environment_filters.any? do |filter|
+          k.to_s.match(/#{filter}/)
+        end
+      end
+    end
   end
 end
