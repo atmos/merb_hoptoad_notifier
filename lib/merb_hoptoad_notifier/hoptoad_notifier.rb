@@ -3,23 +3,23 @@ require 'net/http'
 module HoptoadNotifier
   class << self
     attr_accessor :api_key, :logger
-    
+
     def configure
       key = YAML.load_file(Merb.root / 'config' / 'hoptoad.yml')
       if key
         env = key[Merb.env.to_sym]
         env ? @api_key = env[:api_key] : raise(ArgumentError, "No hoptoad key for Merb environment #{Merb.env}")
       end
-    end    
-    
+    end
+
     def logger
       @logger || Merb.logger
     end
 
     def environment_filters
-      @environment_filters ||= %w(SSH_AUTH_SOCK)
+      @environment_filters ||= %w(AWS_ACCESS_KEY  AWS_SECRET_ACCESS_KEY AWS_ACCOUNT SSH_AUTH_SOCK)
     end
-    
+
     def notify_hoptoad(request, session)
       return if request.nil?
       params = request.params
