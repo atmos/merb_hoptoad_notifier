@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{merb_hoptoad_notifier}
-  s.version = "1.0.2.1"
+  s.version = "1.0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Corey Donohoe", "Phil Darnowsky"]
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = %q{Merb plugin that provides hoptoad exception notification}
   s.email = %q{phil@darnowsky.com}
   s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
-  s.files = ["LICENSE", "README", "Rakefile", "TODO", "lib/merb_hoptoad_notifier", "lib/merb_hoptoad_notifier/hoptoad_notifier.rb", "lib/merb_hoptoad_notifier/merbtasks.rb", "lib/merb_hoptoad_notifier.rb", "spec/fixtures", "spec/fixtures/hoptoad.yml", "spec/merb_hoptoad_notifier_spec.rb", "spec/spec.opts", "spec/spec_helper.rb"]
+  s.files = ["LICENSE", "README", "Rakefile", "TODO", "lib/merb_hoptoad_notifier", "lib/merb_hoptoad_notifier/hoptoad_notifier.rb", "lib/merb_hoptoad_notifier/merbtasks.rb", "lib/merb_hoptoad_notifier/hoptoad_mixin.rb", "lib/merb_hoptoad_notifier.rb", "spec/fixtures", "spec/fixtures/hoptoad.yml", "spec/merb_hoptoad_notifier_spec.rb", "spec/spec.opts", "spec/spec_helper.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/phildarnowsky}
   s.require_paths = ["lib"]
