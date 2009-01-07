@@ -20,6 +20,34 @@ module HoptoadNotifier
       @environment_filters ||= %w(AWS_ACCESS_KEY  AWS_SECRET_ACCESS_KEY AWS_ACCOUNT SSH_AUTH_SOCK)
     end
 
+    def warn_hoptoad(message, request, session, options={})
+      return if request.nil?
+      params = request.params
+
+      data = {
+        :api_key       => HoptoadNotifier.api_key,
+        :error_class   => options[:error_class] || "Warning",
+        :error_message => message,
+        :backtrace     => caller,
+        :environment   => ENV.to_hash
+      }
+
+      data[:request] = {
+        :params => params[:original_params]
+      }
+
+      data[:environment] = clean_hoptoad_environment(ENV.to_hash.merge(request.env))
+      data[:environment][:RAILS_ENV] = Merb.env
+
+      data[:session] = {
+         :key         => session.instance_variable_get("@session_id"),
+         :data        => session.instance_variable_get("@data")
+      }
+
+      send_to_hoptoad :notice => default_notice_options.merge(data)
+      true
+    end
+    
     def notify_hoptoad(request, session)
       return if request.nil?
       params = request.params
