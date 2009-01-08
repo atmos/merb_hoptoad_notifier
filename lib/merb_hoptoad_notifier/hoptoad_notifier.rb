@@ -33,7 +33,7 @@ module HoptoadNotifier
       }
 
       data[:request] = {
-        :params => params[:original_params]
+        :params => params
       }
 
       data[:environment] = clean_hoptoad_environment(ENV.to_hash.merge(request.env))
@@ -62,7 +62,7 @@ module HoptoadNotifier
         }
 
         data[:request] = {
-          :params => params[:original_params]
+          :params => params
         }
 
         data[:environment] = clean_hoptoad_environment(ENV.to_hash.merge(request.env))
