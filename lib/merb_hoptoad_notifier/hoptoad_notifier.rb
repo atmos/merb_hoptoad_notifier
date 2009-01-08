@@ -26,7 +26,7 @@ module HoptoadNotifier
 
       data = {
         :api_key       => HoptoadNotifier.api_key,
-        :error_class   => options[:error_class] || "Warning",
+        :error_class   => options[:error_class] || message,
         :error_message => message,
         :backtrace     => caller,
         :environment   => ENV.to_hash
