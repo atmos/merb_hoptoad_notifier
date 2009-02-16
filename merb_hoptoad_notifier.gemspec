@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{merb_hoptoad_notifier}
-  s.version = "1.0.2.4"
+  s.version = "1.0.2.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Corey Donohoe", "Phil Darnowsky"]
-  s.date = %q{2009-01-06}
+  s.date = %q{2009-02-16}
   s.description = %q{Merb plugin that provides hoptoad exception notification}
   s.email = %q{phil@darnowsky.com}
   s.extra_rdoc_files = ["README", "LICENSE", "TODO"]
