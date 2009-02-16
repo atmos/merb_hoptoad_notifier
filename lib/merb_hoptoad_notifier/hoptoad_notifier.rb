@@ -41,7 +41,7 @@ module HoptoadNotifier
 
       data[:session] = {
          :key         => session.instance_variable_get("@session_id"),
-         :data        => session.instance_variable_get("@data")
+         :data        => session.to_hash
       }
 
       send_to_hoptoad :notice => default_notice_options.merge(data)
@@ -70,7 +70,7 @@ module HoptoadNotifier
 
         data[:session] = {
            :key         => session.instance_variable_get("@session_id"),
-           :data        => session.instance_variable_get("@data")
+           :data        => session.to_hash
         }
 
         send_to_hoptoad :notice => default_notice_options.merge(data)
