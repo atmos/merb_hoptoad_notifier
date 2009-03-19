@@ -6,6 +6,14 @@ require 'merb-core/version'
 require 'merb-core/tasks/merb_rake_helper'
 require 'spec/rake/spectask'
 
+install_home = ENV['GEM_HOME'] ? "-i #{ENV['GEM_HOME']}" : ""
+ 
+def sudo
+  windows = (PLATFORM =~ /win32|cygwin/) rescue nil
+  ENV['MERB_SUDO'] ||= "sudo"
+  sudo = windows ? "" : ENV['MERB_SUDO']
+end
+
 NAME = "merb_hoptoad_notifier"
 GEM_VERSION = "1.0.9.1"
 AUTHOR = "Corey Donohoe"
