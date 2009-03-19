@@ -90,7 +90,7 @@ module HoptoadNotifier
         http.open_timeout = 2 # seconds
         # http.use_ssl = HoptoadNotifier.secure
         response = begin
-                     http.post(url.path, stringify_keys(data).to_yaml, headers)
+                     http.post(url.path, clean_non_serializable_data(data).to_yaml, headers)
                    rescue TimeoutError => e
                      logger.error "Timeout while contacting the Hoptoad server."
                      nil
@@ -115,6 +115,21 @@ module HoptoadNotifier
       }
     end     
     
+    def clean_non_serializable_data(notice) #:nodoc:
+      notice.select{|k,v| serializable?(v) }.inject({}) do |h, pair|
+        h[pair.first] = pair.last.is_a?(Hash) ? clean_non_serializable_data(pair.last) : pair.last
+        h
+      end
+    end
+
+    def serializable?(value) #:nodoc:
+      value.is_a?(Fixnum) || 
+      value.is_a?(Array)  || 
+      value.is_a?(String) || 
+      value.is_a?(Hash)   || 
+      value.is_a?(Bignum)
+    end
+
     def stringify_keys(hash) #:nodoc:
       hash.inject({}) do |h, pair|
         h[pair.first.to_s] = pair.last.is_a?(Hash) ? stringify_keys(pair.last) : pair.last
