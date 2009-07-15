@@ -77,6 +77,22 @@ module HoptoadNotifier
       end
       true
     end
+    
+    def notify_hoptoad_exception(exception)
+      data = {
+        :api_key       => HoptoadNotifier.api_key,
+        :error_class   => Extlib::Inflection.camelize(exception.class.name),
+        :error_message => "#{Extlib::Inflection.camelize(exception.class.name)}: #{exception.message}",
+        :backtrace     => exception.backtrace,
+        :environment   => ENV.to_hash
+      }
+                  
+      data[:environment][:RAILS_ENV] = Merb.env
+     
+      send_to_hoptoad :notice => default_notice_options.merge(data)                 
+      true
+    end
+    
 
     def send_to_hoptoad(data) #:nodoc:
       url = URI.parse("http://hoptoadapp.com:80/notices/")
