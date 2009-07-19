@@ -6,9 +6,6 @@ any merb app that's based on merb 1.0 and higher
 This plugin: http://github.com/atmos/merb_hoptoad_notifier/tree/master
 The original: http://github.com/thoughtbot/hoptoad_notifier/tree/master
 
-NOTE: I don't maintain this anymore, if you want exception notification in merb
-please try out the rack plugin, http://github.com/atmos/rack_hoptoad
-
 Usage:
 
 1) Get your api key for your app from hoptoadapp.com
