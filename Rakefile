@@ -3,19 +3,13 @@ require 'rake/gempackagetask'
 require 'rubygems/specification'
 require 'date'
 require 'merb-core/version'
-require 'merb-core/tasks/merb_rake_helper'
 require 'spec/rake/spectask'
+require 'bundler'
 
 install_home = ENV['GEM_HOME'] ? "-i #{ENV['GEM_HOME']}" : ""
- 
-def sudo
-  windows = (PLATFORM =~ /win32|cygwin/) rescue nil
-  ENV['MERB_SUDO'] ||= "sudo"
-  sudo = windows ? "" : ENV['MERB_SUDO']
-end
 
 NAME = "merb_hoptoad_notifier"
-GEM_VERSION = "1.0.9.1"
+GEM_VERSION = "1.0.10"
 AUTHOR = "Corey Donohoe"
 EMAIL = 'atmos@atmos.org'
 HOMEPAGE = "http://github.com/atmos/merb_hoptoad_notifier"
@@ -33,18 +27,19 @@ spec = Gem::Specification.new do |s|
   s.author = AUTHOR
   s.email = EMAIL
   s.homepage = HOMEPAGE
-  s.add_dependency('merb-core', '>= 1.0.9')
+
+  manifest = Bundler::Environment.load(File.dirname(__FILE__) + '/Gemfile')
+  manifest.dependencies.each do |d|
+    next unless d.only && d.only.include?('release')
+    s.add_dependency(d.name, d.version)
+  end
+
   s.require_path = 'lib'
   s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
-end
-
-desc "install the plugin locally"
-task :install => [:package] do
-  sh %{#{sudo} gem install #{install_home} pkg/#{NAME}-#{GEM_VERSION} --no-update-sources}
 end
 
 desc "create a gemspec file"
@@ -54,20 +49,13 @@ task :make_spec do
   end
 end
 
-namespace :jruby do
-  desc "Run :package and install the resulting .gem with jruby"
-  task :install => :package do
-    sh %{#{sudo} jruby -S gem install #{install_home} pkg/#{NAME}-#{GEM_VERSION}.gem --no-rdoc --no-ri}
-  end
-end
-
 Spec::Rake::SpecTask.new(:default) do |t|
   t.spec_opts << %w(-fs --color) << %w(-O spec/spec.opts)
   t.spec_opts << '--loadby' << 'random'
   t.spec_files = Dir["spec/*_spec.rb"]
   t.rcov = ENV.has_key?('NO_RCOV') ? ENV['NO_RCOV'] != 'true' : true
   t.rcov_opts << '--exclude' << '.gem/'
-  
+
   t.rcov_opts << '--text-summary'
   t.rcov_opts << '--sort' << 'coverage' << '--sort-reverse'
   t.rcov_opts << '--only-uncovered'

@@ -3,3 +3,6 @@ log/*
 coverage
 pkg
 *.kpf
+bin
+vendor
+*.gemspec

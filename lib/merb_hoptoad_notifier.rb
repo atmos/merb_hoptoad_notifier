@@ -1,10 +1,9 @@
-require File.expand_path(File.dirname(__FILE__)+'/merb_hoptoad_notifier/hoptoad_notifier')
-require File.expand_path(File.dirname(__FILE__)+'/merb_hoptoad_notifier/hoptoad_mixin')
-
-# make sure we're running inside Merb
 if defined?(Merb::Plugins)
+  libdir = File.join(File.dirname(__FILE__), 'merb_hoptoad_notifier')
+  require 'toadhopper'
+  require File.join(libdir, 'hoptoad_notifier')
+
   Merb::BootLoader.after_app_loads do
     HoptoadNotifier.configure
   end
-  Merb::Plugins.add_rakefiles "merb_hoptoad_notifier/merbtasks"
 end
