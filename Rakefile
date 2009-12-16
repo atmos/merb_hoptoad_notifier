@@ -9,7 +9,7 @@ require 'bundler'
 install_home = ENV['GEM_HOME'] ? "-i #{ENV['GEM_HOME']}" : ""
 
 NAME = "merb_hoptoad_notifier"
-GEM_VERSION = "1.0.10"
+GEM_VERSION = "1.0.11"
 AUTHOR = "Corey Donohoe"
 EMAIL = 'atmos@atmos.org'
 HOMEPAGE = "http://github.com/atmos/merb_hoptoad_notifier"

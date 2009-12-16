@@ -1,7 +1,7 @@
 bundle_path "vendor"
 disable_system_gems
 
-merb_gem_version = '>=1.0.9'
+merb_gem_version = '>=1.0.7'
 
 only :release do
   gem "merb-core",              merb_gem_version
