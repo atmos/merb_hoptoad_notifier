@@ -1,6 +1,6 @@
 module Merb
   module HoptoadNotifier
-    VERSION = '1.1.0'
+    VERSION = '1.1.1'
     class << self
       attr_accessor :api_key, :logger, :environment_filters
     end
