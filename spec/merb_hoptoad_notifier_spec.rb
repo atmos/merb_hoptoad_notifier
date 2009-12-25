@@ -5,11 +5,11 @@ describe "HoptoadNotifier" do
     config = { :development => { :api_key=> ENV['MY_HOPTOAD_API_KEY'] || 'blah' } }
     mock(YAML).load_file(File.join(Merb.root / 'config' / 'hoptoad.yml')) { config }
 
-    HoptoadNotifier.configure
+    Merb::HoptoadNotifier.configure
   end
   describe "notification" do
     it "posts to hoptoad" do
-      HoptoadNotifier.notify_hoptoad(fake_request_with_exceptions, { :user_id => 42 })
+      Merb::HoptoadNotifier.notify_hoptoad(fake_request_with_exceptions, { :user_id => 42 })
     end
   end
 end

@@ -13,5 +13,5 @@ only :test do
   gem 'rcov'
   gem 'rr'
   gem 'ruby-debug'
-  gem 'bundler'
+  gem 'bundler',     '~>0.7.2'
 end
