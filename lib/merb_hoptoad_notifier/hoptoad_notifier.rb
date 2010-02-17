@@ -19,7 +19,7 @@ module Merb
     end
 
     def self.environment_filters=(filters)
-      @environment_filters << filters
+      environment_filters << filters
     end
 
     def self.logger
