@@ -19,7 +19,7 @@ module Merb
     end
 
     def self.environment_filters=(filters)
-      environment_filters << filters
+      environment_filters << filters.map { |filter| filter.to_s }
     end
 
     def self.logger
