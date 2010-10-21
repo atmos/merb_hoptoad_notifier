@@ -46,7 +46,7 @@ module Merb
     end
 
     def self.dispatcher
-      @dispatcher ||= ToadHopper.new(api_key)
+      @dispatcher ||= Toadhopper.new(api_key)
     end
   end
 end
