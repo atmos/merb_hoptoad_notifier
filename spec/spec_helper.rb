@@ -1,4 +1,4 @@
-Bundler.require_env(:test)
+Bundler.setup(:default, :test)
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
 require 'rr'
 require 'merb-core'

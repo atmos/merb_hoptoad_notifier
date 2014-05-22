@@ -6,3 +6,4 @@ pkg
 bin
 vendor
 *.gemspec
+.bundle/*

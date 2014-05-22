@@ -3,9 +3,7 @@ require 'rubygems/specification'
 require 'date'
 require 'merb-core/version'
 require 'spec/rake/spectask'
-require 'bundler'
-
-Bundler.require_env
+require 'bundler/setup'
 
 require 'lib/merb_hoptoad_notifier'
 
@@ -29,10 +27,10 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
 
-  manifest = Bundler::Dsl.load_gemfile(File.dirname(__FILE__) + '/Gemfile')
+  manifest = bundle = Bundler::Definition.build("Gemfile", "Gemfile.lock", {})
   manifest.dependencies.each do |d|
-    next unless d.only && d.only.include?('release')
-    s.add_dependency(d.name, d.version)
+    next if d.groups && d.groups.include?('test')
+    s.add_dependency(d.name, d.requirement)
   end
 
   s.require_path = 'lib'

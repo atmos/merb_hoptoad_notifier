@@ -1,17 +1,13 @@
-bundle_path "vendor"
-disable_system_gems
+source :rubygems
 
-merb_gem_version = '>=1.0.7'
+gem 'merb-core', '~>1.0.15'
+gem 'toadhopper', '~>1.0.4'
 
-only :release do
-  gem "merb-core",              merb_gem_version
-  gem 'toadhopper',  '~>0.9.1'
-end
-
-only :test do
+group :test do
+  gem 'rspec', '1.3.1'
   gem 'rake'
   gem 'rcov'
   gem 'rr'
   gem 'ruby-debug'
-  gem 'bundler',     '~>0.7.2'
+  gem 'bundler', '~>1.0.0'
 end
